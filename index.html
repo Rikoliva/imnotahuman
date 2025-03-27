@@ -230,17 +230,38 @@
         }
         #erratic-code {
             background-color: #2d3748;
-            padding: 1.5rem;
-            border-radius: 0.375rem;
+            padding: 2rem;
+            border-radius: 0.5rem;
             overflow-x: auto;
             max-width: 100%;
             font-size: 0.9rem;
-            line-height: 1.4;
+            line-height: 1.6;
             max-height: 70vh;
             white-space: pre-wrap;
             font-family: 'Source Code Pro', monospace;
-            margin-bottom: 1rem;
+            color: #cbd5e0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            letter-spacing: 0.025em;
         }
+        #erratic-code p {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 2rem;
+            text-align: justify;
+        }
+        #erratic-code p::before {
+            content: '■';
+            color: #4f46e5;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 0.8em;
+        }
+        .text-purple-400 { color: #c084fc; }
+        .text-blue-400 { color: #60a5fa; }
+        .text-red-400 { color: #f87171; }
+        .text-yellow-400 { color: #fbbf24; }
+        .text-green-400 { color: #34d399; }
         /* Media query para móviles */
         @media (max-width: 767px) {
             #captcha-container {
@@ -471,82 +492,100 @@
 
             function getStaticText() {
                 return `
-                    <div class="space-y-4 text-gray-300 text-sm leading-relaxed">
-                        <p> Tengo inquilinos en casa</p>
-                        
-                        <p>Estos últimos meses han sonado como el radiocasete cuando se estaba
-                        quedando sin pilas, un sonido dilatado, grave, agónico, como una
-                        pesadilla pastosa que abrazaba mi alma balbuceando “¡Si todo va
-                        bien, estamos jodidos!”. Mi cabeza era como un submarino
-                        hundiéndose en la lava, cada vez más presión, más caliente, más
-                        fundido.</p>
-                        
-                        <p>Es extraño intuir durante años, que llevas a ese compañero detrás,
-                        cada día acercándose más, gritando cada vez más alto. Hasta que
-                        te acorrala en una mala resaca, te hace jiujitsu brasileño y un
-                        mataleón y pum K.O. El Tigris y el Eufrates brotan de tus ojos, el
-                        aire se escapa de tus labios, el mundo se derrumba y la ansiedad y la
-                        depresión se mudan a tu casa con un alquiler con derecho a compra.
-                        Estuve días en la lona, fumando, sin comer, sin dormir, sin vivir.
-                        Luego pasé a arrastrarme durante semanas, con el cerebro infestado
-                        como una hormiga con cordyceps. Hasta que finalmente decidí ir a
-                        terapia por que lo poco que hacía lo movía el dolor, la rabia o la
-                        frustración.</p>
-                        
-                        <p>Tenía un trilero en la cabeza cambiándome las cartas, y resulta que
-                        era yo mismo. Me hablé mal durante años, y a veces sigo recayendo.
-                        Pero sobre todo me di cuenta que era adicto, soy adicto. Era adicto a
-                        la idea de que no podía cambiar, de que estaba roto. Adicto al dolor
-                        conocido, a la culpa mártir. Aterrado de la incertidumbre me
-                        saboteaba cuando estaba apunto de hacer algo bonito. Y mejor que no
-                        te pille en una relación si no has ido a tratamiento nunca, porque
-                        la otra persona se va a llevar la peor parte, y va a ver como pierdes
-                        todos los valores y te transformas en una caricatura malsonante con
-                        una pataleta infantil.</p>
-                        
-                        <p>Siento que el mundo se ha acelerado, que la guerra suena en la radio,
-                        que queremos escaparnos a Marte y que cada lunes es una condena. ¿Por
-                        que hay tanto ruido?¿Hay más gente con inquilinos en casa?</p>
-                        
-                        <p>En esa ciénaga, en uno de esos pozos que he cavado durante la
-                        depresión, comencé a tirar del hilo de mi mente, a interrogar al
-                        trilero. ¿De donde viene toda esta mierda? ¿Cuál es la tubería de
-                        mierda que está rota en los cimientos de mi mente? Por supuesto no
-                        iba a delatar mis traumas tan fácilmente, es un mal perro. Pienso
-                        que es una rehabilitación larga, una carrera de fondo que me llevará
-                        tiempo y tengo que desinfectar las heridas para que cicatricen bien.</p>
-                        
-                        <p>Traumas, duelos, frustraciones, fracasos, el corazón roto. Un pack
-                        completito, pulserita todo incluido, me dabas una puñalada y te daba
-                        las gracias. Es duro asomarse a ese espejo y empezar a reconocerse,
-                        perdonarse a la cara.</p>
-                        
-                        <p>Tenia que arrancar el motor, pensar menos, moverme, chapotear. Me
-                        costaba un mundo hacer cualquier cosa, sobre todo deporte o cosas que
-                        me gustaban, que eran sanas, pero que requerían más esfuerzo. Y
-                        detrás de eso, o de otras cosas que me tenían bloqueado o me
-                        causaban malestar, estaba esa sombra gritándome ¿Para qué? ¿Por
-                        qué? ¿Merece la pena? ¿Cambiarás algo? Y el trilero me cambiaba
-                        las cartas con un juego de manos ¡zas! Ya estás haciendo otra cosa.
-                        Se ha activando algún automatismo, un algoritmo sutil tatuado en tu
-                        amígdala, que te lanza sugerencias para que vayas a por dopamina
-                        barata con cualquier vicio de los que tengas. O a buscar pertenencia,
-                        reconocimiento, cariño o cualquier cosa que hayas perdido en tu
-                        infancia, en una red virtual saturada de estímulos y consumismo, un
-                        macro-casino de ilusiones rotas, un carrusel infinito de un circo
-                        estridente.</p>
-                        
-                        <p>Cuesta salir de esa vorágine, tocar tierra, coger aire, ser
-                        compasivo con uno mismo. Darse cancha. Dejarse ayudar. Admitir que
-                        eres vulnerable.</p>
-                        
-                        <p>Pienso que escribir es bueno para el proceso, para arrancar el motor
-                        y hacer algo, ayuda a ordenar los sentimientos, a ponerle nombre. A
-                        mi es una de esas cosas que me gustan y que me ayuda a desahogarme y
-                        se puede combinar con algunos vicios, como beber o fumar, aunque no
-                        lo recomiendo. Mis inquilinos siguen ahí, pero ya solo vienen a
-                        joder todas las noches y algunas mañanas. Y yo voy cogiendo fuerzas
-                        para echarlos definitivamente de casa.</p>
+                    <div class="max-w-2xl mx-auto px-4">
+                        <p class="mb-4">
+                            <span class="text-purple-400">>>></span> Tengo inquilinos en casa.<br><br>
+                            
+                            <span class="text-blue-400">[001]</span> Estos últimos meses han sonado como el radiocasete cuando se estaba
+                            quedando sin pilas, un sonido dilatado, grave, agónico, como una
+                            pesadilla pastosa que abrazaba mi alma balbuceando <span class="text-red-400">"¡Si todo va
+                            bien, estamos jodidos!"</span>. Mi cabeza era como un submarino
+                            hundiéndose en la lava, cada vez más presión, más caliente, más
+                            fundido.
+                        </p>
+
+                        <p class="mb-4">
+                            <span class="text-blue-400">[002]</span> Es extraño intuir durante años, que llevas a ese compañero detrás,
+                            cada día acercándose más, gritando cada vez más alto. Hasta que
+                            te acorrala en una mala resaca, te hace jiujitsu brasileño y un
+                            mataleón y <span class="text-yellow-400">pum K.O.</span> El Tigris y el Eufrates brotan de tus ojos, el
+                            aire se escapa de tus labios, el mundo se derrumba y la ansiedad y la
+                            depresión se mudan a tu casa con un alquiler con derecho a compra.
+                            Estuve días en la lona, fumando, sin comer, sin dormir, sin vivir.
+                            Luego pasé a arrastrarme durante semanas, con el cerebro infestado
+                            como una hormiga con cordyceps. Hasta que finalmente decidí ir a
+                            terapia por que lo poco que hacía lo movía el dolor, la rabia o la
+                            frustración.
+                        </p>
+
+                        <p class="mb-4">
+                            <span class="text-blue-400">[003]</span> Tenía un trilero en la cabeza cambiándome las cartas, y resulta que
+                            era yo mismo. Me hablé mal durante años, y a veces sigo recayendo.
+                            Pero sobre todo me di cuenta que era adicto, soy adicto. Era adicto a
+                            la idea de que no podía cambiar, de que estaba roto. Adicto al dolor
+                            conocido, a la culpa mártir. Aterrado de la incertidumbre me
+                            saboteaba cuando estaba apunto de hacer algo bonito. Y mejor que no
+                            te pille en una relación si no has ido a tratamiento nunca, porque
+                            la otra persona se va a llevar la peor parte, y va a ver como pierdes
+                            todos los valores y te transformas en una caricatura malsonante con
+                            una pataleta infantil.
+                        </p>
+
+                        <p class="mb-4">
+                            <span class="text-blue-400">[004]</span> Siento que el mundo se ha acelerado, que la guerra suena en la radio,
+                            que queremos escaparnos a Marte y que cada lunes es una condena. ¿Por
+                            que hay tanto ruido?¿Hay más gente con inquilinos en casa?
+                        </p>
+
+                        <p class="mb-4">
+                            <span class="text-blue-400">[005]</span> En esa ciénaga, en uno de esos pozos que he cavado durante la
+                            depresión, comencé a tirar del hilo de mi mente, a interrogar al
+                            trilero. ¿De donde viene toda esta mierda? ¿Cuál es la tubería de
+                            mierda que está rota en los cimientos de mi mente? Por supuesto no
+                            iba a delatar mis traumas tan fácilmente, es un mal perro. Pienso
+                            que es una rehabilitación larga, una carrera de fondo que me llevará
+                            tiempo y tengo que desinfectar las heridas para que cicatricen bien.
+                        </p>
+
+                        <p class="mb-4">
+                            <span class="text-blue-400">[006]</span> Traumas, duelos, frustraciones, fracasos, el corazón roto. Un pack
+                            completito, pulserita todo incluido, me dabas una puñalada y te daba
+                            las gracias. Es duro asomarse a ese espejo y empezar a reconocerse,
+                            perdonarse a la cara.
+                        </p>
+
+                        <p class="mb-4">
+                            <span class="text-blue-400">[007]</span> Tenia que arrancar el motor, pensar menos, moverme, chapotear. Me
+                            costaba un mundo hacer cualquier cosa, sobre todo deporte o cosas que
+                            me gustaban, que eran sanas, pero que requerían más esfuerzo. Y
+                            detrás de eso, o de otras cosas que me tenían bloqueado o me
+                            causaban malestar, estaba esa sombra gritándome ¿Para qué? ¿Por
+                            qué? ¿Merece la pena? ¿Cambiarás algo? Y el trilero me cambiaba
+                            las cartas con un juego de manos ¡zas! Ya estás haciendo otra cosa.
+                            Se ha activando algún automatismo, un algoritmo sutil tatuado en tu
+                            amígdala, que te lanza sugerencias para que vayas a por dopamina
+                            barata con cualquier vicio de los que tengas. O a buscar pertenencia,
+                            reconocimiento, cariño o cualquier cosa que hayas perdido en tu
+                            infancia, en una red virtual saturada de estímulos y consumismo, un
+                            macro-casino de ilusiones rotas, un carrusel infinito de un circo
+                            estridente.
+                        </p>
+
+                        <p class="mb-4">
+                            <span class="text-blue-400">[008]</span> Cuesta salir de esa vorágine, tocar tierra, coger aire, ser
+                            compasivo con uno mismo. Darse cancha. Dejarse ayudar. Admitir que
+                            eres vulnerable.
+                        </p>
+
+                        <p class="mb-4">
+                            <span class="text-blue-400">[009]</span> Pienso que escribir es bueno para el proceso, para arrancar el motor
+                            y hacer algo, ayuda a ordenar los sentimientos, a ponerle nombre. A
+                            mi es una de esas cosas que me gustan y que me ayuda a desahogarme y
+                            se puede combinar con algunos vicios, como beber o fumar, aunque no
+                            lo recomiendo. <span class="text-green-400">Mis inquilinos siguen ahí</span>, pero ya solo vienen a
+                            joder todas las noches y algunas mañanas. Y yo voy cogiendo fuerzas
+                            para echarlos definitivamente de casa.
+                        </p>
                     </div>
                 `;
             }
