@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'M NOT A HUMAN</title>
+    <meta name="description" content="Verificación CAPTCHA interactiva para asegurar que eres humano.">
+    <meta name="keywords" content="CAPTCHA, verificación, seguridad, humano, interactivo, formulario">
+    <meta name="author" content="Tu Nombre o Empresa">
+    <link rel="canonical" href="https://tudominio.com/captcha-interactivo">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Inter', sans-serif; /* Fuente por defecto para todo el body */
+            background-color: #f9fafb; /* Color de fondo muy claro */
+            color: #374151; /* Color de texto principal */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px; /* Padding para el body, asegura espacio en bordes en móviles */
+        }
+        #captcha-container {
+            background-color: #ffffff; /* Fondo blanco para el contenedor del CAPTCHA */
+            border-radius: 0.5rem; /* Bordes redondeados */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Sombra suave */
+            padding: 1.5rem; /* Padding aumentado para mejor espaciado interior */
+            width: 100%; /* Ancho del 100% para el contenedor */
+            max-width: 400px; /* Ancho máximo para el contenedor, se adapta a móviles */
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mb-4 {
+            margin-bottom: 1rem; /* Margen inferior de 1rem (16px) */
+        }
+        .mt-4 {
+            margin-top: 1rem; /* Margen superior de 1rem (16px) */
+        }
+        .font-semibold {
+            font-weight: 600; /* Peso de fuente semibold */
+        }
+        .text-sm {
+            font-size: 0.875rem; /* Tamaño de fuente pequeño (14px) */
+            line-height: 1.25rem; /* Altura de línea para el texto pequeño */
+        }
+        .text-center {
+            text-align: center; /* Alineación de texto al centro */
+        }
+        .hidden {
+            display: none !important; /* Oculta el elemento */
+        }
+        .form-checkbox {
+            height: 1.25rem; /* Tamaño del checkbox: 20px */
+            width: 1.25rem;
+            color: #3b82f6; /* Color del checkbox (azul) */
+            border-radius: 0.25rem; /* Bordes redondeados del checkbox */
+            cursor: pointer; /* Cursor de puntero al pasar por encima */
+        }
+        .form-checkbox:focus {
+            outline: none; /* Elimina el outline por defecto del navegador */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Añade un box-shadow como efecto de foco */
+        }
+        .ml-2 {
+            margin-left: 0.5rem; /* Margen izquierdo de 0.5rem (8px) */
+        }
+        .text-gray-700 {
+            color: #4b5563; /* Color de texto gris oscuro */
+        }
+        /* Estilos del logo reCAPTCHA */
+        .recaptcha-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #805AD5;
+            border: 4px solid #805AD5;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        .recaptcha-bar {
+            background-color: #FFFFFF;
+            width: 16px;
+            height: 3px;
+            border-radius: 1.5px;
+            position: absolute;
+        }
+        .recaptcha-bar:nth-child(1) {
+            transform: rotate(45deg);
+        }
+        .recaptcha-bar:nth-child(2) {
+            transform: rotate(-45deg);
+        }
+        .recaptcha-text {
+            font-size: 0.7rem;
+            color: #757575;
+            margin-top: 0.25rem;
+            text-align: center;
+        }
+        /* Estilos de los desafíos */
+        #challenge-area {
+            margin-top: 1rem;
+        }
+        #text-challenge-input {
+            appearance: none;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+            color: #374151;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+        #text-challenge-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+        #multiple-choice-challenge {
+            margin-bottom: 1rem;
+        }
+        #options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+        #options-container button {
+            background-color: #e5e7eb;
+            color: #374151;
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+            font-size: 0.875rem;
+            border: 1px solid transparent;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+        }
+        #options-container button:hover {
+            background-color: #d1d5db;
+        }
+        #options-container button.selected {
+            background-color: #3b82f6;
+            color: #fff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 5px #3b82f6;
+        }
+        #multiple-choice-feedback {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+        #verify-button {
+            background-color: #3b82f6;
+            color: #fff;
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            font-size: 0.875rem;
+            border: none;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #verify-button:hover {
+            background-color: #2563eb;
+            box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+        }
+        #verification-message {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        #attempts-remaining {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-align: center;
+        }
+        /* Estilos de la pantalla de fallo */
+        #failure-screen {
+            background-color: #1a202c;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        #failure-message-text {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        /* Estilos de la pantalla de éxito */
+        #success-screen {
+            background-color: #1a202c;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        #erratic-code {
+            background-color: #2d3748;
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            max-width: 100%;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            max-height: 70vh;
+            white-space: pre-wrap;
+            font-family: 'Source Code Pro', monospace;
+            margin-bottom: 1rem;
+        }
+        /* Media query para móviles */
+        @media (max-width: 767px) {
+            #captcha-container {
+                padding: 1rem;
+            }
+            .recaptcha-text {
+                font-size: 0.7rem;
+            }
+            .recaptcha-logo {
+                width: 28px;
+                height: 28px;
+            }
+            .text-sm {
+                font-size: 0.8rem;
+            }
+            #verify-button {
+                font-size: 0.9rem;
+            }
+            #options-container button {
+                font-size: 0.85rem;
+                padding: 0.75rem;
+            }
+            #failure-message-text {
+                font-size: 1rem;
+            }
+            #erratic-code {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="captcha-container">
+        <div class="flex items-center justify-between mb-4">
+            <label for="captcha-checkbox" class="flex items-center">
+                <input type="checkbox" id="captcha-checkbox" class="form-checkbox" onchange="toggleChallengeArea()">
+                <span class="ml-2 text-gray-700 text-sm">I'm not a human</span>
+            </label>
+            <div class="ml-2">
+                <div class="recaptcha-logo">
+                    <div class="recaptcha-bar"></div>
+                    <div class="recaptcha-bar"></div>
+                </div>
+                <div class="recaptcha-text text-center ml-2">reCAPTCHA</div>
+            </div>
+        </div>
+
+        <div id="challenge-area" class="hidden mt-4">
+            <div id="text-challenge" class="mb-4 hidden">
+                <p class="font-semibold mb-2 text-sm" id="text-challenge-prompt"></p>
+                <input type="text" id="text-challenge-input" class="text-sm">
+            </div>
+
+            <div id="multiple-choice-challenge" class="mb-4 hidden">
+                <p class="font-semibold mb-2 text-sm" id="multiple-choice-prompt"></p>
+                <div id="options-container"></div>
+                <p id="multiple-choice-feedback" class="mt-2 text-sm"></p>
+            </div>
+
+            <button id="verify-button" onclick="verifyCaptcha()">Verify</button>
+            <p id="verification-message" class="mt-4 text-sm"></p>
+            <p id="attempts-remaining" class="mt-2 text-sm text-gray-500"></p>
+        </div>
+    </div>
+
+    <div id="failure-screen" class="hidden">
+        <div class="mb-4 flex-center">
+            <div class="recaptcha-logo">
+                <div class="recaptcha-bar"></div>
+                <div class="recaptcha-bar"></div>
+            </div>
+            <div class="recaptcha-text text-center ml-2">reCAPTCHA</div>
+        </div>
+        <p id="failure-message-text">Seem's like you're not a robot.</p>
+    </div>
+
+    <div id="success-screen" class="hidden">
+        <div class="mb-4 flex-center">
+            <div class="recaptcha-logo">
+                <div class="recaptcha-bar"></div>
+                <div class="recaptcha-bar"></div>
+            </div>
+            <div class="recaptcha-text text-center ml-2">reCAPTCHA</div>
+        </div>
+        <pre id="erratic-code"></pre>
+        <p class="mt-4 text-lg">Verificación exitosa.</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables globales
+            let currentChallenge = null;
+            let expectedSolution = null;
+            let attemptsRemaining = 3;
+            let cycleCount = 1;
+            let challengeSolved = false;
+            let selectedAnswer = null;
+            const MAX_ATTEMPTS = 3;
+            const SHOW_FAILURE_DURATION = 2000;
+            const SHOW_SUCCESS_DURATION = 10000;
+            // Elementos del DOM
+            const captchaContainer = document.getElementById('captcha-container');
+            const failureScreen = document.getElementById('failure-screen');
+            const successScreen = document.getElementById('success-screen');
+            const textChallengeDiv = document.getElementById('text-challenge');
+            const multipleChoiceChallengeDiv = document.getElementById('multiple-choice-challenge');
+            const textChallengePrompt = document.getElementById('text-challenge-prompt');
+            const textChallengeInput = document.getElementById('text-challenge-input');
+            const multipleChoicePrompt = document.getElementById('multiple-choice-prompt');
+            const optionsContainer = document.getElementById('options-container');
+            const verificationMessage = document.getElementById('verification-message');
+            const attemptsRemainingDisplay = document.getElementById('attempts-remaining');
+            const erraticCodeDisplay = document.getElementById('erratic-code');
+            const captchaCheckbox = document.getElementById('captcha-checkbox');
+
+
+            // Funciones para generar desafíos
+            function generateMathSequence() {
+                const start = Math.floor(Math.random() * 10) + 5;
+                const sequence = [start, start + 2, start + 4, start + 6];
+                expectedSolution = (start + 8).toString();
+                return `Complete the sequence: ${sequence.join(', ')}, ?`;
+            }
+
+            function generateBinaryChallenge() {
+                const decimalNumber = Math.floor(Math.random() * 100) + 1;
+                const binaryString = decimalNumber.toString(2);
+                expectedSolution = binaryString;
+                return `Convert the decimal number to binary: ${decimalNumber}`;
+            }
+
+            function generateLogicalRuleChallenge() {
+                const codeSnippets = [
+                    "if (x > 5) { return true; } else { return false; }",
+                    "for (let i = 0; i < 10; i++) { console.log(i); }",
+                    "const arr = [1, 2, 3, 4, 5]; arr.forEach(item => console.log(item));",
+                    "function add(a, b) { return a + b; }",
+                    "try { throw new Error('Test error'); } catch (e) { console.error(e); }",
+                    "const obj = { name: 'Test', value: 123 }; console.log(obj.name);",
+                    "const promise = new Promise(resolve => setTimeout(resolve, 1000)); promise.then(() => console.log('Resolved!'));",
+                    "class MyClass { constructor(val) { this.val = val; } const instance = new MyClass(42);",
+                    "const regex = /abc/g; const str = 'abcdefg'; console.log(str.match(regex));",
+                    "const data = { key1: 'value1', key2: 'value2' }; console.log(JSON.stringify(data));"
+                ];
+                const selectedSnippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+                let correctOption = selectedSnippet;
+                const otherOptions = [];
+                while (otherOptions.length < 3) {
+                    const randomSnippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+                    if (randomSnippet !== correctOption && !otherOptions.includes(randomSnippet)) {
+                        otherOptions.push(randomSnippet);
+                    }
+                }
+                const options = [correctOption, ...otherOptions];
+                // Fisher-Yates shuffle para aleatorizar las opciones
+                for (let i = options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [options[i], options[j]] = [options[j], options[i]];
+                }
+                expectedSolution = correctOption;
+                return {
+                    prompt: `Select the correct code snippet:`,
+                    options: options,
+                    solution: correctOption
+                };
+            }
+
+            function generateComplexChallenge() {
+                const challengeType = Math.random();
+                if (challengeType < 0.25) {
+                    return {
+                        type: 'text',
+                        prompt: "Solve this cryptic equation: (2 * x^2 - 5x + 3) / (x - 1) = 0. What is x?",
+                        solution: "1.5"
+                    };
+                } else if (challengeType < 0.5) {
+                    return {
+                        type: 'text',
+                        prompt: generateBinaryChallenge(),
+                        solution: expectedSolution
+                    };
+                } else if (challengeType < 0.75) {
+                    const logicalChallenge = generateLogicalRuleChallenge();
+                    return {
+                        type: 'multiple-choice',
+                        prompt: logicalChallenge.prompt,
+                        options: logicalChallenge.options,
+                        solution: logicalChallenge.solution
+                    };
+                } else {
+                    const colors = ['rojo', 'verde', 'azul', 'amarillo', 'morado', 'naranja'];
+                    const correctSequence = [];
+                    for (let i = 0; i < 4; i++) {
+                        correctSequence.push(colors[Math.floor(Math.random() * colors.length)]);
+                    }
+                    const shuffledSequence = [...correctSequence].sort(() => Math.random() - 0.5);
+                    expectedSolution = correctSequence.join(', ');
+                    return {
+                        type: 'multiple-choice',
+                        prompt: `Identify the original sequence. Disordered sequence: ${shuffledSequence.join(', ')}`,
+                        options: [
+                            correctSequence.join(', '),
+                            shuffledSequence.sort(() => Math.random() - 0.5).join(', '),
+                            shuffledSequence.sort(() => Math.random() - 0.5).join(', '),
+                            shuffledSequence.join(', ')
+                        ],
+                        solution: correctSequence.join(', ')
+                    };
+                }
+            }
+
+            function generateSimpleChallenge() {
+                const simpleChallenges = [
+                    { type: 'text', prompt: "What is 2 + 2?", solution: "4" },
+                    { type: 'text', prompt: "What is the first letter of the alphabet?", solution: "A" },
+                    { type: 'multiple-choice', prompt: "Select the number two", options: ["1", "2", "3"], solution: "2" },
+                    { type: 'text', prompt: "What is the capital of France?", solution: "Paris" },
+                    { type: 'multiple-choice', prompt: "What color is the sky?", options: ["Red", "Blue", "Green"], solution: "Blue" }
+                ];
+                return simpleChallenges[Math.floor(Math.random() * simpleChallenges.length)];
+            }
+
+            function generateErraticCode() {
+                let code = '';
+                const lines = Math.floor(Math.random() * 20) + 15;
+                const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;.,+-*/|}{()[]~^°!@#$%=&?¿¡<>$_';
+                const keywords = ['if', 'else', 'for', 'while', 'function', 'return', 'const', 'let', 'var', 'class', 'new', 'try', 'catch', 'throw', 'finally', 'switch', 'case', 'break', 'default', 'true', 'false', 'null', 'undefined', 'this', 'super', 'extends', 'import', 'export', 'from', 'static', 'get', 'set', 'async', 'await'];
+                const colors = ['text-red-500', 'text-green-500', 'text-blue-500', 'text-yellow-500', 'text-purple-500', 'text-cyan-500', 'text-orange-500', 'text-pink-500'];
+                for (let i = 0; i < lines; i++) {
+                    let lineLength = Math.floor(Math.random() * 80) + 40;
+                    let currentLine = '';
+                    for (let j = 0; j < lineLength; j++) {
+                        const rand = Math.random();
+                        if (rand < 0.1) {
+                            currentLine += `<span class="${colors[Math.floor(Math.random() * colors.length)]}">${keywords[Math.floor(Math.random() * keywords.length)]}</span> `;
+                        } else {
+                            currentLine += `<span class="${colors[Math.floor(Math.random() * colors.length)]}">${characters[Math.floor(Math.random() * characters.length)]}</span>`;
+                        }
+                    }
+                    code += currentLine + '<br>';
+                }
+                return code;
+            }
+
+            // Función para mostrar la pantalla de fallo y reiniciar el ciclo (incrementa cycleCount)
+            function showFailureScreen() {
+                captchaContainer.classList.add('hidden');
+                failureScreen.classList.remove('hidden');
+                cycleCount++;
+                attemptsRemaining = MAX_ATTEMPTS;
+                setTimeout(() => {
+                    failureScreen.classList.add('hidden');
+                    captchaCheckbox.checked = false;
+                    captchaContainer.classList.remove('hidden');
+                    toggleChallengeArea();
+                }, SHOW_FAILURE_DURATION);
+            }
+
+            // Función para mostrar la pantalla de éxito, abrir Instagram y recargar
+            function showSuccessScreen() {
+                captchaContainer.classList.add('hidden');
+                successScreen.classList.remove('hidden');
+                erraticCodeDisplay.innerHTML = generateErraticCode();
+                setTimeout(() => {
+                    window.open('https://www.instagram.com/ric0liva/', '_blank');
+                    location.reload();
+                }, SHOW_SUCCESS_DURATION);
+            }
+
+            // Alterna la visibilidad del área de desafío
+            function toggleChallengeArea() {
+                const challengeArea = document.getElementById('challenge-area');
+                if (captchaCheckbox.checked) {
+                    challengeArea.classList.remove('hidden');
+                    loadChallenge();
+                } else {
+                    challengeArea.classList.add('hidden');
+                    challengeSolved = false;
+                    attemptsRemaining = MAX_ATTEMPTS;
+                    attemptsRemainingDisplay.textContent = '';
+                    verificationMessage.textContent = '';
+                }
+            }
+
+            // Carga el desafío según el ciclo actual
+            function loadChallenge() {
+                if (attemptsRemaining <= 0) {
+                    showFailureScreen();
+                    return;
+                }
+                attemptsRemainingDisplay.textContent = `Attempts remaining: ${attemptsRemaining}`;
+                let challenge;
+                if (cycleCount === 1) {
+                    challenge = generateComplexChallenge();
+                } else {
+                    challenge = (Math.random() < 0.5) ? generateSimpleChallenge() : generateComplexChallenge();
+                }
+                currentChallenge = challenge.type;
+                if (challenge.type === 'text') {
+                    textChallengeDiv.classList.remove('hidden');
+                    multipleChoiceChallengeDiv.classList.add('hidden');
+                    textChallengePrompt.textContent = challenge.prompt;
+                    expectedSolution = challenge.solution;
+                    textChallengeInput.value = '';
+                } else {
+                    textChallengeDiv.classList.add('hidden');
+                    multipleChoiceChallengeDiv.classList.remove('hidden');
+                    multipleChoicePrompt.textContent = challenge.prompt;
+                    optionsContainer.innerHTML = '';
+                    challenge.options.forEach(option => {
+                        const button = document.createElement('button');
+                        button.textContent = option;
+                        button.onclick = () => {
+                            selectedAnswer = option;
+                            Array.from(optionsContainer.children).forEach(child => {
+                                child.classList.remove('selected');
+                            });
+                            button.classList.add('selected');
+                        };
+                        optionsContainer.appendChild(button);
+                    });
+                    expectedSolution = challenge.solution;
+                }
+            }
+
+            // Función para verificar la respuesta
+            function verifyCaptcha() {
+                if (challengeSolved) return;
+                if (currentChallenge === 'text') {
+                    const userAnswer = textChallengeInput.value.trim();
+                    if (userAnswer === expectedSolution) {
+                        verificationMessage.textContent = "Verificación exitosa.";
+                        challengeSolved = true;
+                        showSuccessScreen();
+                    } else {
+                        attemptsRemaining--;
+                        attemptsRemainingDisplay.textContent = `Attempts remaining: ${attemptsRemaining}`;
+                        verificationMessage.textContent = "Verification failed. Please try again.";
+                        if (attemptsRemaining === 0) {
+                            showFailureScreen();
+                        } else {
+                            loadChallenge();
+                        }
+                    }
+                } else if (currentChallenge === 'multiple-choice') {
+                    if (selectedAnswer === expectedSolution) {
+                        verificationMessage.textContent = "Verificación exitosa.";
+                        challengeSolved = true;
+                        showSuccessScreen();
+                    } else {
+                        attemptsRemaining--;
+                        attemptsRemainingDisplay.textContent = `Attempts remaining: ${attemptsRemaining}`;
+                        verificationMessage.textContent = "Verification failed. Please try again.";
+                        if (attemptsRemaining === 0) {
+                            showFailureScreen();
+                        } else {
+                            loadChallenge();
+                        }
+                    }
+                }
+            }
+
+            // Exponer funciones globales
+            window.verifyCaptcha = verifyCaptcha;
+            window.toggleChallengeArea = toggleChallengeArea;
+        });
+    </script>
+</body>
+</html>
+
+
+
