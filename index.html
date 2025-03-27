@@ -16,24 +16,24 @@
     <style>
         /* Estilos generales */
         body {
-            font-family: 'Inter', sans-serif; /* Fuente por defecto para todo el body */
-            background-color: #f9fafb; /* Color de fondo muy claro */
-            color: #374151; /* Color de texto principal */
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #374151;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px; /* Padding para el body, asegura espacio en bordes en móviles */
+            padding: 20px;
         }
         #captcha-container {
-            background-color: #ffffff; /* Fondo blanco para el contenedor del CAPTCHA */
-            border-radius: 0.5rem; /* Bordes redondeados */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Sombra suave */
-            padding: 1.5rem; /* Padding aumentado para mejor espaciado interior */
-            width: 100%; /* Ancho del 100% para el contenedor */
-            max-width: 400px; /* Ancho máximo para el contenedor, se adapta a móviles */
-            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
         }
         .flex-center {
             display: flex;
@@ -41,40 +41,40 @@
             justify-content: center;
         }
         .mb-4 {
-            margin-bottom: 1rem; /* Margen inferior de 1rem (16px) */
+            margin-bottom: 1rem;
         }
         .mt-4 {
-            margin-top: 1rem; /* Margen superior de 1rem (16px) */
+            margin-top: 1rem;
         }
         .font-semibold {
-            font-weight: 600; /* Peso de fuente semibold */
+            font-weight: 600;
         }
         .text-sm {
-            font-size: 0.875rem; /* Tamaño de fuente pequeño (14px) */
-            line-height: 1.25rem; /* Altura de línea para el texto pequeño */
+            font-size: 0.875rem;
+            line-height: 1.25rem;
         }
         .text-center {
-            text-align: center; /* Alineación de texto al centro */
+            text-align: center;
         }
         .hidden {
-            display: none !important; /* Oculta el elemento */
+            display: none !important;
         }
         .form-checkbox {
-            height: 1.25rem; /* Tamaño del checkbox: 20px */
+            height: 1.25rem;
             width: 1.25rem;
-            color: #3b82f6; /* Color del checkbox (azul) */
-            border-radius: 0.25rem; /* Bordes redondeados del checkbox */
-            cursor: pointer; /* Cursor de puntero al pasar por encima */
+            color: #3b82f6;
+            border-radius: 0.25rem;
+            cursor: pointer;
         }
         .form-checkbox:focus {
-            outline: none; /* Elimina el outline por defecto del navegador */
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Añade un box-shadow como efecto de foco */
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
         }
         .ml-2 {
-            margin-left: 0.5rem; /* Margen izquierdo de 0.5rem (8px) */
+            margin-left: 0.5rem;
         }
         .text-gray-700 {
-            color: #4b5563; /* Color de texto gris oscuro */
+            color: #4b5563;
         }
         /* Estilos del logo reCAPTCHA */
         .recaptcha-logo {
@@ -327,13 +327,21 @@
             <div class="recaptcha-text text-center ml-2">reCAPTCHA</div>
         </div>
         <pre id="erratic-code"></pre>
-        <p class="mt-4 text-lg">Verificación exitosa.</p>
+        <div class="flex gap-4 mt-6">
+            <button onclick="location.reload()" 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">
+                Reiniciar
+            </button>
+            <button onclick="window.open('https://www.instagram.com/ric0liva/', '_blank')" 
+                    class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">
+                Instagram
+            </button>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Variables globales
             let currentChallenge = null;
             let expectedSolution = null;
             let attemptsRemaining = 3;
@@ -342,8 +350,7 @@
             let selectedAnswer = null;
             const MAX_ATTEMPTS = 3;
             const SHOW_FAILURE_DURATION = 2000;
-            const SHOW_SUCCESS_DURATION = 10000;
-            // Elementos del DOM
+            
             const captchaContainer = document.getElementById('captcha-container');
             const failureScreen = document.getElementById('failure-screen');
             const successScreen = document.getElementById('success-screen');
@@ -358,8 +365,6 @@
             const erraticCodeDisplay = document.getElementById('erratic-code');
             const captchaCheckbox = document.getElementById('captcha-checkbox');
 
-
-            // Funciones para generar desafíos
             function generateMathSequence() {
                 const start = Math.floor(Math.random() * 10) + 5;
                 const sequence = [start, start + 2, start + 4, start + 6];
@@ -397,7 +402,6 @@
                     }
                 }
                 const options = [correctOption, ...otherOptions];
-                // Fisher-Yates shuffle para aleatorizar las opciones
                 for (let i = options.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [options[i], options[j]] = [options[j], options[i]];
@@ -465,29 +469,88 @@
                 return simpleChallenges[Math.floor(Math.random() * simpleChallenges.length)];
             }
 
-            function generateErraticCode() {
-                let code = '';
-                const lines = Math.floor(Math.random() * 20) + 15;
-                const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;.,+-*/|}{()[]~^°!@#$%=&?¿¡<>$_';
-                const keywords = ['if', 'else', 'for', 'while', 'function', 'return', 'const', 'let', 'var', 'class', 'new', 'try', 'catch', 'throw', 'finally', 'switch', 'case', 'break', 'default', 'true', 'false', 'null', 'undefined', 'this', 'super', 'extends', 'import', 'export', 'from', 'static', 'get', 'set', 'async', 'await'];
-                const colors = ['text-red-500', 'text-green-500', 'text-blue-500', 'text-yellow-500', 'text-purple-500', 'text-cyan-500', 'text-orange-500', 'text-pink-500'];
-                for (let i = 0; i < lines; i++) {
-                    let lineLength = Math.floor(Math.random() * 80) + 40;
-                    let currentLine = '';
-                    for (let j = 0; j < lineLength; j++) {
-                        const rand = Math.random();
-                        if (rand < 0.1) {
-                            currentLine += `<span class="${colors[Math.floor(Math.random() * colors.length)]}">${keywords[Math.floor(Math.random() * keywords.length)]}</span> `;
-                        } else {
-                            currentLine += `<span class="${colors[Math.floor(Math.random() * colors.length)]}">${characters[Math.floor(Math.random() * characters.length)]}</span>`;
-                        }
-                    }
-                    code += currentLine + '<br>';
-                }
-                return code;
+            function getStaticText() {
+                return `
+                    <div class="space-y-4 text-gray-300 text-sm leading-relaxed">
+                        <p> Tengo inquilinos en casa</p>
+                        
+                        <p>Estos últimos meses han sonado como el radiocasete cuando se estaba
+                        quedando sin pilas, un sonido dilatado, grave, agónico, como una
+                        pesadilla pastosa que abrazaba mi alma balbuceando “¡Si todo va
+                        bien, estamos jodidos!”. Mi cabeza era como un submarino
+                        hundiéndose en la lava, cada vez más presión, más caliente, más
+                        fundido.</p>
+                        
+                        <p>Es extraño intuir durante años, que llevas a ese compañero detrás,
+                        cada día acercándose más, gritando cada vez más alto. Hasta que
+                        te acorrala en una mala resaca, te hace jiujitsu brasileño y un
+                        mataleón y pum K.O. El Tigris y el Eufrates brotan de tus ojos, el
+                        aire se escapa de tus labios, el mundo se derrumba y la ansiedad y la
+                        depresión se mudan a tu casa con un alquiler con derecho a compra.
+                        Estuve días en la lona, fumando, sin comer, sin dormir, sin vivir.
+                        Luego pasé a arrastrarme durante semanas, con el cerebro infestado
+                        como una hormiga con cordyceps. Hasta que finalmente decidí ir a
+                        terapia por que lo poco que hacía lo movía el dolor, la rabia o la
+                        frustración.</p>
+                        
+                        <p>Tenía un trilero en la cabeza cambiándome las cartas, y resulta que
+                        era yo mismo. Me hablé mal durante años, y a veces sigo recayendo.
+                        Pero sobre todo me di cuenta que era adicto, soy adicto. Era adicto a
+                        la idea de que no podía cambiar, de que estaba roto. Adicto al dolor
+                        conocido, a la culpa mártir. Aterrado de la incertidumbre me
+                        saboteaba cuando estaba apunto de hacer algo bonito. Y mejor que no
+                        te pille en una relación si no has ido a tratamiento nunca, porque
+                        la otra persona se va a llevar la peor parte, y va a ver como pierdes
+                        todos los valores y te transformas en una caricatura malsonante con
+                        una pataleta infantil.</p>
+                        
+                        <p>Siento que el mundo se ha acelerado, que la guerra suena en la radio,
+                        que queremos escaparnos a Marte y que cada lunes es una condena. ¿Por
+                        que hay tanto ruido?¿Hay más gente con inquilinos en casa?</p>
+                        
+                        <p>En esa ciénaga, en uno de esos pozos que he cavado durante la
+                        depresión, comencé a tirar del hilo de mi mente, a interrogar al
+                        trilero. ¿De donde viene toda esta mierda? ¿Cuál es la tubería de
+                        mierda que está rota en los cimientos de mi mente? Por supuesto no
+                        iba a delatar mis traumas tan fácilmente, es un mal perro. Pienso
+                        que es una rehabilitación larga, una carrera de fondo que me llevará
+                        tiempo y tengo que desinfectar las heridas para que cicatricen bien.</p>
+                        
+                        <p>Traumas, duelos, frustraciones, fracasos, el corazón roto. Un pack
+                        completito, pulserita todo incluido, me dabas una puñalada y te daba
+                        las gracias. Es duro asomarse a ese espejo y empezar a reconocerse,
+                        perdonarse a la cara.</p>
+                        
+                        <p>Tenia que arrancar el motor, pensar menos, moverme, chapotear. Me
+                        costaba un mundo hacer cualquier cosa, sobre todo deporte o cosas que
+                        me gustaban, que eran sanas, pero que requerían más esfuerzo. Y
+                        detrás de eso, o de otras cosas que me tenían bloqueado o me
+                        causaban malestar, estaba esa sombra gritándome ¿Para qué? ¿Por
+                        qué? ¿Merece la pena? ¿Cambiarás algo? Y el trilero me cambiaba
+                        las cartas con un juego de manos ¡zas! Ya estás haciendo otra cosa.
+                        Se ha activando algún automatismo, un algoritmo sutil tatuado en tu
+                        amígdala, que te lanza sugerencias para que vayas a por dopamina
+                        barata con cualquier vicio de los que tengas. O a buscar pertenencia,
+                        reconocimiento, cariño o cualquier cosa que hayas perdido en tu
+                        infancia, en una red virtual saturada de estímulos y consumismo, un
+                        macro-casino de ilusiones rotas, un carrusel infinito de un circo
+                        estridente.</p>
+                        
+                        <p>Cuesta salir de esa vorágine, tocar tierra, coger aire, ser
+                        compasivo con uno mismo. Darse cancha. Dejarse ayudar. Admitir que
+                        eres vulnerable.</p>
+                        
+                        <p>Pienso que escribir es bueno para el proceso, para arrancar el motor
+                        y hacer algo, ayuda a ordenar los sentimientos, a ponerle nombre. A
+                        mi es una de esas cosas que me gustan y que me ayuda a desahogarme y
+                        se puede combinar con algunos vicios, como beber o fumar, aunque no
+                        lo recomiendo. Mis inquilinos siguen ahí, pero ya solo vienen a
+                        joder todas las noches y algunas mañanas. Y yo voy cogiendo fuerzas
+                        para echarlos definitivamente de casa.</p>
+                    </div>
+                `;
             }
 
-            // Función para mostrar la pantalla de fallo y reiniciar el ciclo (incrementa cycleCount)
             function showFailureScreen() {
                 captchaContainer.classList.add('hidden');
                 failureScreen.classList.remove('hidden');
@@ -501,18 +564,12 @@
                 }, SHOW_FAILURE_DURATION);
             }
 
-            // Función para mostrar la pantalla de éxito, abrir Instagram y recargar
             function showSuccessScreen() {
                 captchaContainer.classList.add('hidden');
                 successScreen.classList.remove('hidden');
-                erraticCodeDisplay.innerHTML = generateErraticCode();
-                setTimeout(() => {
-                    window.open('https://www.instagram.com/ric0liva/', '_blank');
-                    location.reload();
-                }, SHOW_SUCCESS_DURATION);
+                erraticCodeDisplay.innerHTML = getStaticText();
             }
 
-            // Alterna la visibilidad del área de desafío
             function toggleChallengeArea() {
                 const challengeArea = document.getElementById('challenge-area');
                 if (captchaCheckbox.checked) {
@@ -527,7 +584,6 @@
                 }
             }
 
-            // Carga el desafío según el ciclo actual
             function loadChallenge() {
                 if (attemptsRemaining <= 0) {
                     showFailureScreen();
@@ -568,7 +624,6 @@
                 }
             }
 
-            // Función para verificar la respuesta
             function verifyCaptcha() {
                 if (challengeSolved) return;
                 if (currentChallenge === 'text') {
@@ -605,13 +660,9 @@
                 }
             }
 
-            // Exponer funciones globales
             window.verifyCaptcha = verifyCaptcha;
             window.toggleChallengeArea = toggleChallengeArea;
         });
     </script>
 </body>
 </html>
-
-
-
